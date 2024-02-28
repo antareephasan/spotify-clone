@@ -7,13 +7,16 @@ import { BiSearch } from 'react-icons/bi';
 import Box from './Box';
 import SidebarItem from './SidebarItem';
 import Library from './Library';
+import { Song } from '@/types';
 
 interface SidebarProps {
     children: React.ReactNode;
+    songs: Song[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
-    children
+    children,
+    songs
 }) => {
     const pathname = usePathname();
     const routes = useMemo(() => [
@@ -29,7 +32,8 @@ const Sidebar: React.FC<SidebarProps> = ({
             active: pathname === '/search',
             href: '/search'
         }
-    ], [])
+    ], []);
+
     return (
         <div className='flex h-full'>
             <div className='hidden md:flex flex-col gap-y-2 bg-black h-full w-[300px] p-2'>
@@ -44,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     </div>
                 </Box>
                 <Box className='overflow-y-auto h-full'>
-                    <Library />
+                    <Library songs={songs} />
                 </Box>
             </div>
             <main className='h-full flex-1 overflow-y-auto md:py-2 md:pr-2'>

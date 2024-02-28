@@ -1,17 +1,33 @@
-"use server";
+import { Song } from "@/types";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from 'next/headers';
 
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+const getSongs = async (): Promise<Song[]> => {
+    const supabase = createServerComponentClient({
+        cookies: cookies
+    });
 
-const getSongs = async () => {
-    try {
-        const {
-            data,
-            error
-        } = await useSupabaseClient()
-            .from('songs')
-            .select('*')
+    const {
+        data: sessionData,
+        error: sessionError
+    } = await supabase.auth.getSession();
 
-    } catch (error) {
-        console.log(error);
+    if(sessionError) {
+        console.log(sessionError.message);
+        return [];
     }
+
+    const { data, error } = await supabase
+    .from('songs')
+    .select('*')
+    .eq('user_id', sessionData.session?.user.id)
+    .order('created_at', { ascending: false });
+
+    if(error) { 
+        console.log(error.message);
+    }
+
+    return (data as any) || [];
 }
+
+export default getSongs;
