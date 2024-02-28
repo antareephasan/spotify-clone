@@ -19,6 +19,7 @@ const ListItem: React.FC<ListItemProps> = ({
 
   const onClick = () => {
     // Add Authentication before push
+    router.push('/liked')
   }
   return (
     <button
