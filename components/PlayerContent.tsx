@@ -21,7 +21,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
     songUrl
 }) => {
     const player = usePlayer();
-    const [volume, setVolume] = useState(0.8);
+    const [volume, setVolume] = useState(0.3);
     const [prevVolume, setPrevVolume] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
 
@@ -85,8 +85,10 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
     const handlePlay = () => {
         if (!isPlaying) {
+            setIsPlaying(true);
             play();
         } else {
+            setIsPlaying(false);
             pause();
         }
     }
